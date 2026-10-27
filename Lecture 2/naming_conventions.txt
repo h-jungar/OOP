@@ -1,0 +1,19 @@
+Python          snake_case/notation   ex first_name, user_id, is_completed
+C#/C/C++        PascalCase            FirstName, UserId, IsCompleted
+Java/Javascript camelCase             firstName, userId, IsCompleted
+CSS             kebab-case            btn-primary, section-header
+
+
+Vanliga datatyperPython         C#                      Java        Javascript
+text/strängar   str             string                  String      String
+heltal          int             int, long, uint         int         Number
+decimaltal      float           float, double, decimal  double      Number
+sant/falskt     bool            bool                    boolean     boolean
+INGET           None (NoneType) null                    null        null, undefined
+
+
+deklarera variabler Python          C#                      Java        Javascript
+                    utan            datatyp (int, string)   datatyp     var
+                                    var                                 let
+                                                                        const
+                                                                        utan
