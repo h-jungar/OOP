@@ -29,7 +29,7 @@ class TestCaseService:
         if not description.strip():
             return TestCaseResult(False, "Test case description is required.", None)
         if not expected_result.strip():
-            return TestCaseResult(False, "Test case excpected result is required.", None)
+            return TestCaseResult(False, "Test case expected result is required.", None)
         return TestCaseResult(True, "Test case validated", None)
 
 
@@ -39,17 +39,15 @@ class TestCaseService:
         if not validation_result.succeeded:
             return validation_result
 
-        "call generate_test_case_id() and create test_case : TestCase"
-        id = self.generate_test_case_id()
+        test_case_id = self.generate_test_case_id()
 
-        test_case = TestCase(id, title, description, expected_result)
+        test_case = TestCase(test_case_id, title, description, expected_result)
 
         self._test_cases.append(test_case)
         return TestCaseResult(True, f"Test case with title {test_case.title} added successfully.", test_case)
 
 
     def generate_test_case_id(self) -> str:
-        "generate ID:s in format TC001, TC002 etc"
         sequential_number = len(self._test_cases) + 1
         test_case_id = f"TC-{sequential_number:03d}"
         return test_case_id
@@ -60,4 +58,14 @@ class TestCaseService:
 
 
     def find_test_cases_by_title(self, title: str) -> list[TestCase]:
-        "Find test cases by title to look for duplicates"
+        duplicate_title_list = [x for x in self._test_cases if title.strip().lower() == x.title.strip().lower()]
+        return duplicate_title_list
+
+
+    def update_test_case_status(self, test_case_id: str, new_status: TestStatus) -> TestCaseResult:
+        for test_case in self._test_cases:
+            if test_case.id == test_case_id:
+                test_case.status = new_status
+                return TestCaseResult(True, f"Test case with ID {test_case.id} updated status to {test_case.status}.", test_case)
+        else:
+            return TestCaseResult(False, f"Test case with ID {test_case_id} does not exist.", None)

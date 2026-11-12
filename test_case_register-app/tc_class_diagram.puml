@@ -26,11 +26,11 @@
 
     class TestCaseService {
         -_test_cases : list[TestCase]
+        +validate_test_case(title: str, description: str, expected_result: str) : TestCaseResult
         +add_test_case(title : str, description : str, expected_result : str) : TestCaseResult
         +get_test_cases() : list[TestCase]
-        +update_test_case_status(test_case_id : str, new_status : TestStatus) : TestCaseResult
         +find_test_cases_by_title(title : str) : list[TestCase]
-        +validate_test_case(title: str, description: str, expected_result: str) : TestCaseResult
+        +update_test_case_status(test_case_id : str, new_status : TestStatus) : TestCaseResult
         -_generate_test_case_id() : str
 }
 
