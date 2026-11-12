@@ -1,0 +1,46 @@
+@startuml activity_register_test_case
+
+title Activity Diagram - Register Test Case
+
+start
+
+:Select Add test case;
+:Enter title, description\nand expected result;
+:Validate input;
+
+while (Are all required fields valid?) is (No)
+
+    :Display validation errors;
+
+    if (Correct information?) then (Yes)
+        :Enter or correct information;
+        :Validate input;
+    else (No)
+        :Return to main menu;
+        stop
+    endif
+
+endwhile (Yes)
+
+:Find existing test cases\nwith matching title\n(case-insensitive);
+
+if (Matching test cases found?) then (Yes)
+
+    :Display existing test cases;
+
+    if (Register anyway?) then (Yes)
+    else (No)
+        :Return to main menu;
+        stop
+    endif
+else (No)
+endif
+
+:Generate unique test case ID;
+:Create TestCase with status NOT_RUN;
+:Add test case to collection;
+:Display registration result;
+
+stop
+
+@enduml

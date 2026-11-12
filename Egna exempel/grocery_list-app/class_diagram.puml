@@ -1,0 +1,24 @@
+@startuml classdiagram
+    title CustomerService med interface
+
+    skinparam classAttributeIconSize 0
+
+    interface ICustomerService{
+        +AddCustomer(customer: Customer) : void
+        +GetAllCstomers() : Customer[0..*]
+    }
+
+    class CustomerService {
+
+    }
+
+    class Customer{
+        + CustomerName : string
+        + OrganizationNumber : string
+        + EmailAdress : string
+    }
+
+    ICustomerService ..> Customer : <<använder>>
+    CustomerService ..|> ICustomerService : <<implementerar>>
+
+@enduml

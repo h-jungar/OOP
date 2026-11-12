@@ -1,0 +1,102 @@
+@startuml sequence_register_test_case
+
+title Sequence Diagram - Register Test Case
+
+actor User
+participant TestCaseDialog
+participant TestCaseService
+participant TestCase
+participant TestCaseResult
+
+User -> TestCaseDialog : Enter test case information
+
+' Validate input
+loop Retry if validation fails and user wants to correct input
+
+    TestCaseDialog -> TestCaseService : validate_test_case(title, description, expected_result)
+    activate TestCaseService
+
+    TestCaseService -> TestCaseService : Validate input
+
+    alt Validation fails
+
+        TestCaseService -> TestCaseResult : Create failure result
+        TestCaseResult --> TestCaseService : TestCaseResult object
+
+        TestCaseService --> TestCaseDialog : Return failure result
+        deactivate TestCaseService
+
+        TestCaseDialog -> User : Display validation error
+        TestCaseDialog -> User : Ask user to correct input
+
+        alt User chooses to correct input
+            User -> TestCaseDialog : Enter corrected information
+
+        else User chooses to cancel
+            User -> TestCaseDialog : Cancel registration
+            TestCaseDialog -> User : Return to main menu
+
+            break Registration cancelled
+                ' Exit registration flow and return to main menu
+            end
+        end
+
+    else Validation succeeds
+
+        TestCaseService --> TestCaseDialog : Return successful validation
+        deactivate TestCaseService
+    end
+
+end
+
+' Check for existing test cases with the same title
+TestCaseDialog -> TestCaseService : find_test_cases_by_title(title)
+activate TestCaseService
+TestCaseService --> TestCaseDialog : Return matching test cases
+deactivate TestCaseService
+
+alt Matching test cases found
+
+    TestCaseDialog -> User : Display matching test cases
+    TestCaseDialog -> User : Ask whether to continue
+
+    alt User chooses to continue
+        User -> TestCaseDialog : Confirm registration
+
+    else User chooses to cancel
+        User -> TestCaseDialog : Cancel registration
+        TestCaseDialog -> User : Return to main menu
+
+        break Registration cancelled
+        end
+    end
+
+else No matching test cases found
+end
+
+
+
+' Register test case after successful validation
+TestCaseDialog -> TestCaseService : add_test_case(title, description, expected_result)
+activate TestCaseService
+
+TestCaseService -> TestCaseService : Validate input (safety check)
+TestCaseService -> TestCaseService : generate_test_case_id()
+
+TestCaseService -> TestCase : Create TestCase(id, title, description, expected_result, NOT_RUN)
+activate TestCase
+TestCase --> TestCaseService : TestCase object
+deactivate TestCase
+
+TestCaseService -> TestCaseService : Add test case to collection
+
+TestCaseService -> TestCaseResult : Create successful result
+TestCaseResult --> TestCaseService : TestCaseResult object
+
+TestCaseService --> TestCaseDialog : Return success result
+deactivate TestCaseService
+
+TestCaseDialog -> User : Display success message
+
+
+@enduml

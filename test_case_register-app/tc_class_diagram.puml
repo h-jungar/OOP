@@ -1,0 +1,52 @@
+@startuml classdiagram
+    title Test Case Register - Class Diagram
+
+    skinparam classAttributeIconSize 0
+
+    class TestCase {
+        +id : str
+        +title : str
+        +description : str
+        +expected_result : str
+        +status : TestStatus
+    }
+
+    enum TestStatus {
+        NOT_RUN
+        PASSED
+        FAILED
+        BLOCKED
+    }
+
+    class TestCaseResult {
+        +succeeded : bool
+        +message : str
+        +test_case : TestCase | None
+    }
+
+    class TestCaseService {
+        -_test_cases : list[TestCase]
+        +add_test_case(title : str, description : str, expected_result : str) : TestCaseResult
+        +get_test_cases() : list[TestCase]
+        +update_test_case_status(test_case_id : str, new_status : TestStatus) : TestCaseResult
+        +find_test_cases_by_title(title : str) : list[TestCase]
+        +validate_test_case(title: str, description: str, expected_result: str) : TestCaseResult
+        -_generate_test_case_id() : str
+}
+
+    class TestCaseDialog {
+        -_test_case_service : TestCaseService
+        +add_test_case() : None
+        +list_test_cases() : None
+        +update_test_case_status() : None
+        +show_menu() : None
+    }
+
+    ' Relationships
+    TestCaseDialog --> TestCaseService : uses
+    TestCaseService "1" --> "0..*" TestCase : manages
+    TestCaseService ..> TestCaseResult : creates
+    TestCaseResult "0..*" --> "0..1" TestCase : contains
+    TestCase "0..*" --> "1" TestStatus : has status
+
+@enduml
