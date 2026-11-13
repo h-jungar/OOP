@@ -78,7 +78,30 @@ class TestCaseDialog:
                         print("Invalid option, try again!")
                         pause()
 
-        result = self._test_case_service.add_test_case(title, description, expected_result)
+        duplicate_test_cases = self._test_case_service.find_test_cases_by_title(title)
 
+        if duplicate_test_cases:
+            print("There is one or more existing test cases with the same title:")
+            for test_case in duplicate_test_cases:
+                print(f"Existing test case: {test_case.id} - {test_case.title}")
+                print(f"Description: {test_case.description}")
+            print("Do you still want to add the new test case or exit without adding? Choose below:")
+            print("1. Continue and add new test case")
+            print("0. Exit to main menu without adding test case")
+                            
+            while True:
+                option = input("Choose an option: ").strip()
+
+                match option:
+                    case "1":
+                        break
+                    case "0":
+                        return
+                    case _:
+                        print("Invalid option, try again!")
+                        pause()
+        
+        result = self._test_case_service.add_test_case(title, description, expected_result)
         print(result.message)
+
         pause()
