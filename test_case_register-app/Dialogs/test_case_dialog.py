@@ -24,7 +24,7 @@ class TestCaseDialog:
     def __init__(self, test_case_service: TestCaseService):
         self._test_case_service: TestCaseService = test_case_service
 
-    def show_menu(self):
+    def show_menu(self) -> None:
         while True:
             clear_screen()
 
@@ -49,15 +49,15 @@ class TestCaseDialog:
                     print("Invalid option, try again!")
                     pause()
 
-    def add_test_case(self):
+    def add_test_case(self) -> None:
         clear_screen()
         print("\n###  NEW TEST CASE - TEST CASE REGISTER  ###")
         print("To create a new test case enter following information\n")
 
         while True:
-            title = required_input("Title")
-            description = required_input("Description")
-            expected_result = required_input("Expected result")
+            title = input("Title")
+            description = input("Description")
+            expected_result = input("Expected result")
 
             validation_result = self._test_case_service.validate_test_case(title, description, expected_result)
 
@@ -107,7 +107,7 @@ class TestCaseDialog:
 
         pause()
 
-    def list_test_cases(self):
+    def list_test_cases(self) -> None:
         clear_screen()
         all_test_cases = self._test_case_service.get_test_cases()
 
@@ -123,7 +123,7 @@ class TestCaseDialog:
 
         pause()
 
-    def update_test_case_status(self):
+    def update_test_case_status(self) -> None:
         clear_screen()
         print("\n### UPDATE TEST CASE STATUS ###")
 

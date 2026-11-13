@@ -5,13 +5,12 @@ Attribut	Datatyp	        Beskrivning
 test_cases	list[TestCase]	Lista över registrerade testfall
 
 Metod	                    Parametrar	            Returtyp	    Ansvar
-add_test_case()	            test_case: TestCase	    TestCaseResult	Kontrollerar och registrerar testfall
+add_test_case()	            self, title,
+                            description,
+                            expected_result	        TestCaseResult	Kontrollerar och registrerar testfall
 get_test_cases()	        Inga	                list[TestCase]	Hämtar samtliga testfall
 find_test_cases_by_title()	title: str	            list[TestCase]	Hittar testfall med samma titel, skiftlägesokänsligt
 generate_test_case_id()	    Inga	                str	            Genererar nästa ID, exempelvis TC-001
-
-Viktigt: add_test_case() ska använda find_test_cases_by_title() för att hitta möjliga dubbletter. Om en matchning hittas ska dialogen kunna visa det befintliga testfallet och fråga användaren om det nya ändå ska registreras.
-ID ska genereras först när användaren faktiskt väljer att registrera testfallet.
 """
 
 from models.test_case import TestCase
@@ -39,7 +38,7 @@ class TestCaseService:
         if not validation_result.succeeded:
             return validation_result
 
-        test_case_id = self.generate_test_case_id()
+        test_case_id = self._generate_test_case_id()
 
         test_case = TestCase(test_case_id, title, description, expected_result)
 
@@ -47,7 +46,7 @@ class TestCaseService:
         return TestCaseResult(True, f"Test case with title {test_case.title} added successfully.", test_case)
 
 
-    def generate_test_case_id(self) -> str:
+    def _generate_test_case_id(self) -> str:
         sequential_number = len(self._test_cases) + 1
         test_case_id = f"TC-{sequential_number:03d}"
         return test_case_id
@@ -66,6 +65,6 @@ class TestCaseService:
         for test_case in self._test_cases:
             if test_case.id == test_case_id:
                 test_case.status = new_status
-                return TestCaseResult(True, f"Test case with ID {test_case.id} updated status to {test_case.status}.", test_case)
+                return TestCaseResult(True, f"Test case with ID {test_case.id} updated status to {test_case.status.value}.", test_case)
         else:
             return TestCaseResult(False, f"Test case with ID {test_case_id} does not exist.", None)
