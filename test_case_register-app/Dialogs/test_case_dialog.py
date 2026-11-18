@@ -55,9 +55,9 @@ class TestCaseDialog:
         print("To create a new test case enter following information\n")
 
         while True:
-            title = input("Title")
-            description = input("Description")
-            expected_result = input("Expected result")
+            title = input("Title: ")
+            description = input("Description: ")
+            expected_result = input("Expected result: ")
 
             validation_result = self._test_case_service.validate_test_case(title, description, expected_result)
 
