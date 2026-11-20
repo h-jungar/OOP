@@ -30,7 +30,7 @@ loop Retry if validation fails and user wants to correct input
         TestCaseDialog -> User : Ask user to correct input
 
         alt User chooses to correct input
-            User -> TestCaseDialog : Enter corrected information
+            User -> TestCaseDialog : Enter or correct missing information
 
         else User chooses to cancel
             User -> TestCaseDialog : Cancel registration
@@ -72,15 +72,18 @@ alt Matching test cases found
     end
 
 else No matching test cases found
-    ' Register test case after successful validation
+end
+
+' Register test case after successful validation
     TestCaseDialog -> TestCaseService : add_test_case(title, description, expected_result)
     activate TestCaseService
 
     TestCaseService -> TestCaseService : Validate input (safety check)
-    TestCaseService -> TestCaseService : generate_test_case_id()
+    TestCaseService -> TestCaseService : _generate_test_case_id()
 
-    TestCaseService -> TestCase : Create TestCase(id, title, description, expected_result, NOT_RUN)
+    TestCaseService -> TestCase : Create TestCase(id, title, description, expected_result)
     activate TestCase
+    TestCase -> TestCase : Set status = TestStatus.NOT_RUN
     TestCase --> TestCaseService : TestCase object
     deactivate TestCase
 
@@ -93,11 +96,6 @@ else No matching test cases found
     deactivate TestCaseService
 
     TestCaseDialog -> User : Display success message
-end
-
-
-
-
 
 
 @enduml
