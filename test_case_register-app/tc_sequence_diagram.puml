@@ -72,31 +72,32 @@ alt Matching test cases found
     end
 
 else No matching test cases found
+    ' Register test case after successful validation
+    TestCaseDialog -> TestCaseService : add_test_case(title, description, expected_result)
+    activate TestCaseService
+
+    TestCaseService -> TestCaseService : Validate input (safety check)
+    TestCaseService -> TestCaseService : generate_test_case_id()
+
+    TestCaseService -> TestCase : Create TestCase(id, title, description, expected_result, NOT_RUN)
+    activate TestCase
+    TestCase --> TestCaseService : TestCase object
+    deactivate TestCase
+
+    TestCaseService -> TestCaseService : Add test case to collection
+
+    TestCaseService -> TestCaseResult : Create successful result
+    TestCaseResult --> TestCaseService : TestCaseResult object
+
+    TestCaseService --> TestCaseDialog : Return success result
+    deactivate TestCaseService
+
+    TestCaseDialog -> User : Display success message
 end
 
 
 
-' Register test case after successful validation
-TestCaseDialog -> TestCaseService : add_test_case(title, description, expected_result)
-activate TestCaseService
 
-TestCaseService -> TestCaseService : Validate input (safety check)
-TestCaseService -> TestCaseService : generate_test_case_id()
-
-TestCaseService -> TestCase : Create TestCase(id, title, description, expected_result, NOT_RUN)
-activate TestCase
-TestCase --> TestCaseService : TestCase object
-deactivate TestCase
-
-TestCaseService -> TestCaseService : Add test case to collection
-
-TestCaseService -> TestCaseResult : Create successful result
-TestCaseResult --> TestCaseService : TestCaseResult object
-
-TestCaseService --> TestCaseDialog : Return success result
-deactivate TestCaseService
-
-TestCaseDialog -> User : Display success message
 
 
 @enduml

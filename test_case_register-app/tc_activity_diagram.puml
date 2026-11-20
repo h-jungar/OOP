@@ -13,7 +13,7 @@ while (Are all required fields valid?) is (No)
     :Display validation errors;
 
     if (Correct information?) then (Yes)
-        :Enter or correct information;
+        :Enter or correct missing information;
         :Validate input;
     else (No)
         :Return to main menu;

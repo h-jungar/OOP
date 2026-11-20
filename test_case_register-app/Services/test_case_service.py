@@ -1,18 +1,3 @@
-"""
-Ansvarar för programmets logik och hantering av testfall.
-
-Attribut	Datatyp	        Beskrivning
-test_cases	list[TestCase]	Lista över registrerade testfall
-
-Metod	                    Parametrar	            Returtyp	    Ansvar
-add_test_case()	            self, title,
-                            description,
-                            expected_result	        TestCaseResult	Kontrollerar och registrerar testfall
-get_test_cases()	        Inga	                list[TestCase]	Hämtar samtliga testfall
-find_test_cases_by_title()	title: str	            list[TestCase]	Hittar testfall med samma titel, skiftlägesokänsligt
-generate_test_case_id()	    Inga	                str	            Genererar nästa ID, exempelvis TC-001
-"""
-
 from models.test_case import TestCase
 from models.test_case_result import TestCaseResult
 from models.test_status import TestStatus
@@ -23,12 +8,18 @@ class TestCaseService:
 
 
     def validate_test_case(self, title: str, description: str, expected_result: str) -> TestCaseResult:
+        validation_errors = []
+
         if not title.strip():
-            return TestCaseResult(False, "Test case title is required", None)
+            validation_errors.append("Test case title is required.")
         if not description.strip():
-            return TestCaseResult(False, "Test case description is required.", None)
+            validation_errors.append("Test case description is required.")
         if not expected_result.strip():
-            return TestCaseResult(False, "Test case expected result is required.", None)
+            validation_errors.append("Test case expected result is required.")
+
+        if validation_errors:
+            error_message = "\n".join(validation_errors)
+            return TestCaseResult(False, "\n" + error_message + "\n", None)
         return TestCaseResult(True, "Test case validated", None)
 
 

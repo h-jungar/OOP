@@ -1,22 +1,4 @@
-"""
-Ansvarar för användarinteraktionen via terminalen.
-
-Attribut	        Datatyp	            Beskrivning
-test_case_service	TestCaseService	    Referens till servicens instans
-
-Metod	          Parametrar	Returtyp	Ansvar
-add_test_case()	  Inga	        None	    Samlar in information och hanterar registrering
-list_test_cases() Inga	        None	    Visar samtliga registrerade testfall
-show_menu()	      Inga          None	    Visar menyn och hanterar användarens val
-
-Dialogen ska även hantera frågan om användaren vill fortsätta registreringen när en möjlig dubblett hittas.
-
-Vi behöver också lägga till en metod för att ändra status:
-Metod	                    Parametrar	Returtyp	Ansvar
-update_test_case_status()	Inga	    None	    Låter användaren välja testfall och ny status
-"""
-
-from utils.console_helper import clear_screen, pause, required_input
+from utils.console_helper import clear_screen, pause
 from services.test_case_service import TestCaseService
 from models.test_status import TestStatus
 
@@ -54,10 +36,17 @@ class TestCaseDialog:
         print("\n###  NEW TEST CASE - TEST CASE REGISTER  ###")
         print("To create a new test case enter following information\n")
 
+        title = ""
+        description = ""
+        expected_result = ""
+
         while True:
-            title = input("Title: ")
-            description = input("Description: ")
-            expected_result = input("Expected result: ")
+            if not title.strip():
+                title = input("Title: ")
+            if not description.strip():
+                description = input("Description: ")
+            if not expected_result.strip():
+                expected_result = input("Expected result: ")
 
             validation_result = self._test_case_service.validate_test_case(title, description, expected_result)
 
@@ -65,7 +54,7 @@ class TestCaseDialog:
                 break
             
             print(validation_result.message)
-            print("1. Enter test case details again")
+            print("1. Enter or correct missing test case information")
             print("0. Return to main menu")
                 
             option = input("Choose an option: ").strip()
