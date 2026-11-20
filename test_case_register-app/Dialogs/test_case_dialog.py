@@ -42,11 +42,11 @@ class TestCaseDialog:
 
         while True:
             if not title.strip():
-                title = input("Title: ")
+                title = input("Title: ").strip()
             if not description.strip():
-                description = input("Description: ")
+                description = input("Description: ").strip()
             if not expected_result.strip():
-                expected_result = input("Expected result: ")
+                expected_result = input("Expected result: ").strip()
 
             validation_result = self._test_case_service.validate_test_case(title, description, expected_result)
 
@@ -56,17 +56,19 @@ class TestCaseDialog:
             print(validation_result.message)
             print("1. Enter or correct missing test case information")
             print("0. Return to main menu")
+
+            while True:    
+                option = input("Choose an option: ").strip()
                 
-            option = input("Choose an option: ").strip()
-                
-            match option:
-                case "1":
-                    continue
-                case "0":
-                    return
-                case _:
-                    print("Invalid option, try again!")
-                    pause()
+                match option:
+                    case "1":
+                        break
+                    case "0":
+                        return
+                    case _:
+                        print("Invalid option, try again!")
+                        pause()
+            continue
 
         duplicate_test_cases = self._test_case_service.find_test_cases_by_title(title)
 
