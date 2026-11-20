@@ -1,6 +1,6 @@
 from utils.console_helper import clear_screen, pause
-from services.test_case_service import TestCaseService
-from models.test_status import TestStatus
+from services.testcase_service import TestCaseService
+from models.testcase_status import TestCaseStatus
 
 class TestCaseDialog:
     def __init__(self, test_case_service: TestCaseService):
@@ -121,10 +121,10 @@ class TestCaseDialog:
         all_test_cases = self._test_case_service.get_test_cases()
 
         status_options = {
-            "1": TestStatus.NOT_RUN,
-            "2": TestStatus.PASSED,
-            "3": TestStatus.FAILED,
-            "4": TestStatus.BLOCKED}
+            "1": TestCaseStatus.NOT_RUN,
+            "2": TestCaseStatus.PASSED,
+            "3": TestCaseStatus.FAILED,
+            "4": TestCaseStatus.BLOCKED}
 
         if all_test_cases:
             for index, test_case in enumerate(all_test_cases, start=1):

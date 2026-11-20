@@ -1,5 +1,5 @@
-from services.test_case_service import TestCaseService
-from dialogs.test_case_dialog import TestCaseDialog
+from services.testcase_service import TestCaseService
+from dialogs.testcase_dialog import TestCaseDialog
 from utils.console_helper import clear_screen, pause
 
 def main() -> None:

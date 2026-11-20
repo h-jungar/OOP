@@ -1,6 +1,6 @@
-from models.test_case import TestCase
-from models.test_case_result import TestCaseResult
-from models.test_status import TestStatus
+from models.testcase import TestCase
+from models.testcase_result import TestCaseResult
+from models.testcase_status import TestCaseStatus
 
 class TestCaseService:
     def __init__(self):
@@ -52,7 +52,7 @@ class TestCaseService:
         return duplicate_title_list
 
 
-    def update_test_case_status(self, test_case_id: str, new_status: TestStatus) -> TestCaseResult:
+    def update_test_case_status(self, test_case_id: str, new_status: TestCaseStatus) -> TestCaseResult:
         for test_case in self._test_cases:
             if test_case.id == test_case_id:
                 test_case.status = new_status

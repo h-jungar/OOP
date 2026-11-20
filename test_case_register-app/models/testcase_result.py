@@ -1,4 +1,4 @@
-from models.test_case import TestCase
+from models.testcase import TestCase
 
 class TestCaseResult:
     def __init__(self, succeeded : bool, message : str, test_case : TestCase | None):

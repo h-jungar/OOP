@@ -1,4 +1,4 @@
-from models.test_status import TestStatus
+from models.testcase_status import TestCaseStatus
 
 class TestCase:
     def __init__(self, id: str, title: str, description: str, expected_result: str):
@@ -6,4 +6,4 @@ class TestCase:
         self.title = title
         self.description = description
         self.expected_result = expected_result
-        self.status = TestStatus.NOT_RUN
+        self.status = TestCaseStatus.NOT_RUN
