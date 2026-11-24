@@ -68,6 +68,7 @@ alt Matching test cases found
         TestCaseDialog -> User : Return to main menu
 
         break Registration cancelled
+        ' Exit registration flow and return to main menu
         end
     end
 
@@ -83,7 +84,7 @@ end
 
     TestCaseService -> TestCase : Create TestCase(id, title, description, expected_result)
     activate TestCase
-    TestCase -> TestCase : Set status = TestStatus.NOT_RUN
+    TestCase -> TestCase : Set status = TestCaseStatus.NOT_RUN
     TestCase --> TestCaseService : TestCase object
     deactivate TestCase
 
