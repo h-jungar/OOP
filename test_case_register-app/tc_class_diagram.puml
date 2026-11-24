@@ -8,10 +8,10 @@
         +title : str
         +description : str
         +expected_result : str
-        +status : TestStatus
+        +status : TestCaseStatus
     }
 
-    enum TestStatus {
+    enum TestCaseStatus {
         NOT_RUN
         PASSED
         FAILED
@@ -30,7 +30,7 @@
         +add_test_case(title : str, description : str, expected_result : str) : TestCaseResult
         +get_test_cases() : list[TestCase]
         +find_test_cases_by_title(title : str) : list[TestCase]
-        +update_test_case_status(test_case_id : str, new_status : TestStatus) : TestCaseResult
+        +update_test_case_status(test_case_id : str, new_status : TestCaseStatus) : TestCaseResult
         -_generate_test_case_id() : str
 }
 
@@ -47,6 +47,6 @@
     TestCaseService "1" --> "0..*" TestCase : manages
     TestCaseService ..> TestCaseResult : creates
     TestCaseResult "0..*" --> "0..1" TestCase : contains
-    TestCase "0..*" --> "1" TestStatus : has status
+    TestCase "0..*" --> "1" TestCaseStatus : has status
 
 @enduml
