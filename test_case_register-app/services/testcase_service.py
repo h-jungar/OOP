@@ -3,6 +3,8 @@ from models.testcase_result import TestCaseResult
 from models.testcase_status import TestCaseStatus
 
 class TestCaseService:
+    __test__ = False
+    
     def __init__(self):
         self._test_cases: list[TestCase] = []
 
