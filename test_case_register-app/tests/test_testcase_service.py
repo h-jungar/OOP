@@ -2,17 +2,14 @@ import pytest
 from services.testcase_service import TestCaseService
 from models.testcase_status import TestCaseStatus
 
-def test__add_test_case__should_create_test_case():
-    # Arrange
+def test__add_test_case__should_create_test_case__when_all_required_field_are_filled():
     service = TestCaseService()
     title = "Register test case"
     description = "Add a new test case and see that it is added"
     expected_result = "Test case is added with ID TC-001."
 
-    # Act
     result = service.add_test_case(title, description, expected_result)
 
-    # Assert
     assert result.succeeded is True
     assert result.test_case is not None
     assert result.test_case.id == "TC-001"
@@ -20,6 +17,19 @@ def test__add_test_case__should_create_test_case():
     assert result.test_case.description == description
     assert result.test_case.expected_result == expected_result
     assert result.test_case.status == TestCaseStatus.NOT_RUN
+
+def test__add_test_case__should_not_add_test_case__when_description_is_empty():
+    service = TestCaseService()
+    title = "Add test case validation"
+    description = ""
+    expected_result = "No test case is added"
+
+    result = service.add_test_case(title, description, expected_result)
+
+    assert result.succeeded is False
+    assert result.test_case is None
+    assert service.get_test_cases() == []
+
 
 @pytest.mark.parametrize("title, description, expected_result, expected_errors", [
         ("", "Valid description", "Valid expected result", ["title is required"]),
@@ -37,19 +47,18 @@ def test__validate_test_case__should_fail_when_required_field_is_empty(title, de
     for message in expected_errors:
         assert message in result.message
 
-def test__add_test_case__should_not_add_test_case__when_description_is_empty():
+def test__validate_test_case__should_succeed__when_required_fields_are_filled_in():
     service = TestCaseService()
-    title = "Add test case validation"
-    description = ""
-    expected_result = "No test case is added"
+    title = "title"
+    description = "description"
+    expected_result = "expected result"
 
-    result = service.add_test_case(title, description, expected_result)
+    result = service.validate_test_case(title, description, expected_result)
+    
+    assert result.succeeded is True
 
-    assert result.succeeded is False
-    assert result.test_case is None
-    assert service.get_test_cases() == []
 
-def test__generate_test_case_id__should_increment_id_for_each_new_test_case():
+def test__add_test_case__should_assign_sequential_ids_to_new_test_cases():
     service = TestCaseService()
     title = "Generate ID"
     description = "Test that IDs increment for each new id"
@@ -64,6 +73,7 @@ def test__generate_test_case_id__should_increment_id_for_each_new_test_case():
     assert result2.test_case is not None
     assert result1.test_case.id == "TC-001"
     assert result2.test_case.id == "TC-002"
+
 
 @pytest.mark.parametrize("find_title", [
     "VALID TITLE",
@@ -83,6 +93,21 @@ def test__find_test_cases_by_title__should_ignore_case_and_surrounding_whitespac
     assert found_test_cases != []
     assert found_test_cases[0] == result.test_case
 
+def test__find_test_cases_by_title__should_return_empty_list__when_title_does_not_match():
+    service = TestCaseService()
+    title = "title"
+    description = "description"
+    expected_result = "expected result"
+    search_title = "another title"
+
+    result = service.add_test_case(title, description, expected_result)
+    found_test_cases = service.find_test_cases_by_title(search_title)
+    
+    assert result.succeeded is True
+    assert isinstance(found_test_cases, list)
+    assert found_test_cases == []
+    assert len(service.get_test_cases()) == 1
+
 
 def test__get_test_cases__should_return_list__with_added_test_cases():
     service = TestCaseService()
@@ -101,6 +126,7 @@ def test__get_test_cases__should_return_list__with_added_test_cases():
     assert len(all_test_cases) == 2
     assert all_test_cases[0] == result1.test_case
     assert all_test_cases[1] == result2.test_case
+
 
 def test__update_test_case_status__should_update_status__of_test_case_with_valid_id():
     service = TestCaseService()
