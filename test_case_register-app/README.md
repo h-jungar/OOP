@@ -102,7 +102,7 @@ The tests verify the application's core functionality, including test case regis
 ## Design Reflection
 
 ### UML and Implementation
-The implementation follows the design and structure established during the planning phase. The class diagram, activity diagram and sequence diagram were used as a foundation for the application. Some minor adjustments were made during implementation, including changes to class, file and method names. For example, `test_case()` was renamed to `testcase()` to avoid unintended test discovery by pytest. The UML diagrams were also updated to reflect the final implementation. However, the overall functionality and application flow remain as originally planned.
+The implementation follows the design and structure established during the planning phase. The class diagram, activity diagram and sequence diagram were used as a foundation for the application. Some minor adjustments were made during implementation, including changes to class, file and method names. For example, the module name was changed from test_case.py to testcase.py to avoid unintended test discovery by pytest. The UML diagrams were also updated to reflect the final implementation. However, the overall functionality and application flow remain as originally planned.
 
 One important design decision was to separate input validation, duplicate checking and test case creation into distinct steps. The `validate_test_case()` method is used to validate the user's input before the registration process continues. The input validation takes place in a loop that allows the user to correct invalid information or cancel the registration.
 
